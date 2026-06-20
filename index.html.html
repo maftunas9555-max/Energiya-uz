@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0f172a">
+<title>⚡ ENERGIYA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0f1e;
+  --surface:#111827;
+  --surface2:#1a2235;
+  --surface3:#1e2d45;
+  --border:#1e3a5f;
+  --border2:#2d4a6e;
+  --text:#f1f5f9;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --indigo:#6366f1;
+  --indigo2:#818cf8;
+  --violet:#8b5cf6;
+  --emerald:#10b981;
+  --emerald2:#34d399;
+  --rose:#f43f5e;
+  --amber:#f59e0b;
+  --radius:18px;
+  --radius-sm:12px;
+  --radius-xs:8px;
+  --nav-h:68px;
+  --max-w:440px;
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --shadow:0 4px 24px rgba(0,0,0,.4);
+  --shadow-lg:0 16px 48px rgba(0,0,0,.6);
+  --glow-indigo:0 0 40px rgba(99,102,241,.15);
+  --glow-emerald:0 0 40px rgba(16,185,129,.12);
+}
+html,body{height:100%;font-family:var(--font-body);background:#060c18;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+
+/* ===== PHONE SHELL ===== */
+#shell{
+  position:relative;width:100%;max-width:var(--max-w);min-height:100dvh;
+  margin:0 auto;background:var(--bg);overflow:hidden;
+  box-shadow:0 0 0 1px rgba(99,102,241,.12),0 40px 100px rgba(0,0,0,.8);
+}
+@media(min-width:480px){
+  body{display:flex;align-items:flex-start;justify-content:center;padding:20px 0 40px;min-height:100vh;background:#060c18}
+  #shell{border-radius:36px;min-height:820px;max-height:900px}
+}
+
+/* ===== SCROLL AREA ===== */
+.scroll-area{height:100dvh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding-bottom:calc(var(--nav-h) + 12px)}
+.scroll-area::-webkit-scrollbar{display:none}
+
+/* ===== SCREENS ===== */
+.screen{display:none;width:100%;min-height:100%}
+.screen.active{display:block}
+@keyframes slideInR{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes slideInL{from{transform:translateX(-100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.screen.to-right{animation:slideInR .35s cubic-bezier(.4,0,.2,1) forwards}
+.screen.to-left{animation:slideInL .35s cubic-bezier(.4,0,.2,1) forwards}
+
+/* ===== HEADER ===== */
+.app-header{
+  position:sticky;top:0;z-index:50;
+  padding:16px 20px 14px;
+  background:rgba(10,15,30,.85);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(99,102,241,.12);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-icon{font-size:20px;line-height:1}
+.logo-text{font-family:var(--font-mono);font-size:15px;font-weight:500;color:var(--text);letter-spacing:.5px}
+.logo-text span{color:var(--indigo2)}
+.header-actions{display:flex;gap:8px}
+.icon-btn{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;color:var(--text2)
+}
+.icon-btn:active{transform:scale(.92);background:var(--surface3)}
+.icon-btn svg{width:16px;height:16px}
+.notif-dot{
+  position:absolute;top:6px;right:6px;
+  width:6px;height:6px;border-radius:50%;background:var(--rose);
+}
+.icon-btn{position:relative}
+
+/* ===== BOTTOM NAV ===== */
+#bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:var(--max-w);height:var(--nav-h);
+  background:rgba(10,15,30,.95);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(99,102,241,.1);
+  display:flex;align-items:center;z-index:100;
+  padding:0 8px;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;padding:8px 4px;cursor:pointer;border:none;background:none;
+  font-family:var(--font-body);border-radius:var(--radius-sm);transition:all .2s;
+}
+.nav-btn .nb-icon{width:22px;height:22px;color:var(--text3);transition:all .2s}
+.nav-btn .nb-label{font-size:9px;font-weight:600;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;transition:color .2s}
+.nav-btn.active .nb-icon{color:var(--indigo2)}
+.nav-btn.active .nb-label{color:var(--indigo2)}
+.nav-btn:active{transform:scale(.9)}
+
+/* ===== COMMON ===== */
+.page-pad{padding:0 18px}
+.sect-label{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:10px;
+}
+.tag{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:6px;font-size:10px;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;
+}
+.tag-indigo{background:rgba(99,102,241,.15);color:var(--indigo2)}
+.tag-emerald{background:rgba(16,185,129,.12);color:var(--emerald2)}
+.tag-rose{background:rgba(244,63,94,.12);color:var(--rose)}
+.tag-violet{background:rgba(139,92,246,.15);color:#a78bfa}
+
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;
+  box-shadow:var(--shadow);
+}
+.card-sm{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:16px;
+}
+.divider{height:1px;background:var(--border);margin:16px 0}
+.mt-4{margin-top:4px}.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-20{margin-top:20px}.mt-24{margin-top:24px}
+.mb-8{margin-bottom:8px}.mb-12{margin-bottom:12px}.mb-16{margin-bottom:16px}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 20px;border-radius:var(--radius-sm);border:none;
+  font-family:var(--font-body);font-size:14px;font-weight:600;
+  cursor:pointer;transition:all .2s;letter-spacing:.2px;width:100%;
+}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,var(--indigo) 0%,var(--violet) 100%);color:white;box-shadow:0 8px 24px rgba(99,102,241,.3)}
+.btn-primary:hover{box-shadow:0 8px 32px rgba(99,102,241,.5)}
+.btn-emerald{background:linear-gradient(135deg,#059669 0%,var(--emerald) 100%);color:white;box-shadow:0 8px 24px rgba(16,185,129,.25)}
+.btn-ghost{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.btn-ghost:active{background:var(--surface3)}
+.btn svg{width:16px;height:16px}
+.btn-sm{padding:10px 16px;font-size:13px;border-radius:10px}
+.btn-icon{width:40px;height:40px;padding:0;border-radius:10px;flex-shrink:0}
+
+/* INPUTS */
+.input-wrap{
+  background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);transition:border-color .2s;
+}
+.input-wrap:focus-within{border-color:var(--indigo)}
+.input-wrap textarea,.input-wrap input{
+  width:100%;background:transparent;border:none;outline:none;
+  font-family:var(--font-body);font-size:14px;color:var(--text);
+  padding:14px 16px;resize:none;line-height:1.6;
+}
+.input-wrap input::placeholder,.input-wrap textarea::placeholder{color:var(--text3)}
+.input-label{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+
+/* LOADING */
+#global-loading{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(10,15,30,.92);backdrop-filter:blur(8px);
+  flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  max-width:var(--max-w);left:50%;transform:translateX(-50%);
+}
+#global-loading.show{display:flex}
+.spinner{width:44px;height:44px;border:3px solid var(--border2);border-top-color:var(--indigo2);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#global-loading p{font-size:13px;color:var(--text2);font-weight:500}
+#global-loading .l-dots::after{content:'...';animation:dots 1.5s infinite;display:inline-block;width:20px;text-align:left}
+@keyframes dots{0%{content:'.'}33%{content:'..'}66%{content:'...'}}
+
+/* ===== HOME SCREEN ===== */
+.home-hero{
+  padding:24px 18px 20px;
+  background:linear-gradient(160deg,#0d1b35 0%,#0a0f1e 60%);
+  border-bottom:1px solid var(--border);
+}
+.home-greeting{margin-bottom:20px}
+.home-greeting .g-time{font-size:11px;font-weight:600;color:var(--indigo2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.home-greeting h1{font-family:var(--font-display);font-size:28px;line-height:1.2;color:var(--text);margin-bottom:6px}
+.home-greeting h1 em{font-style:italic;color:var(--indigo2)}
+.home-greeting p{font-size:13px;color:var(--text2);line-height:1.6}
+
+.streak-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 16px;margin-bottom:0;
+}
+.streak-item{text-align:center}
+.streak-val{font-family:var(--font-mono);font-size:18px;font-weight:500;color:var(--text);display:block}
+.streak-lbl{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
+.streak-divider{width:1px;height:32px;background:var(--border)}
+
+/* MODULE CARDS */
+.mod-grid{display:flex;flex-direction:column;gap:14px;padding:20px 18px}
+
+.mod-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;cursor:pointer;
+  transition:all .25s;position:relative;
+}
+.mod-card:active{transform:scale(.98);border-color:var(--border2)}
+.mod-card-inner{padding:20px}
+.mod-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.mod-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
+}
+.mod-icon.i-indigo{background:rgba(99,102,241,.15)}
+.mod-icon.i-rose{background:rgba(244,63,94,.12)}
+.mod-icon.i-amber{background:rgba(245,158,11,.12)}
+.mod-arrow{color:var(--text3);width:18px;height:18px;transition:transform .2s}
+.mod-card:active .mod-arrow{transform:translateX(4px)}
+.mod-title{font-family:var(--font-display);font-size:20px;color:var(--text);margin-bottom:6px;line-height:1.2}
+.mod-desc{font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:14px}
+.mod-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mod-prog{
+  flex:1;height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;min-width:60px;
+}
+.mod-prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--indigo),var(--violet));transition:width .6s ease}
+.mod-prog-fill.green{background:linear-gradient(90deg,#059669,var(--emerald))}
+.mod-prog-fill.amber{background:linear-gradient(90deg,#d97706,var(--amber))}
+.mod-prog-text{font-size:11px;color:var(--text3);font-weight:500;white-space:nowrap}
+
+/* Gradient glow lines on cards */
+.mod-card.glow-1::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--indigo),var(--violet),transparent)}
+.mod-card.glow-2::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--rose),#fb7185,transparent)}
+.mod-card.glow-3::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#d97706,var(--amber),transparent)}
+
+/* ===== ICHKIDAGI MEN SCREEN ===== */
+.module-header{
+  padding:20px 18px 16px;
+  background:linear-gradient(160deg,#0d1b35 0%,#0a0f1e 70%);
+  border-bottom:1px solid var(--border);
+}
+.back-btn{
+  display:flex;align-items:center;gap:6px;
+  background:none;border:none;color:var(--text2);font-size:13px;
+  font-weight:500;cursor:pointer;padding:0;margin-bottom:14px;
+  font-family:var(--font-body);
+}
+.back-btn svg{width:16px;height:16px}
+.back-btn:active{opacity:.7}
+.module-title-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.module-icon-lg{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.module-icon-lg.ig{background:rgba(99,102,241,.15)}
+.module-icon-lg.ig-rose{background:rgba(244,63,94,.12)}
+.module-icon-lg.ig-amber{background:rgba(245,158,11,.12)}
+.module-header h2{font-family:var(--font-display);font-size:24px;color:var(--text);line-height:1.2}
+.module-header .mh-sub{font-size:13px;color:var(--text2);line-height:1.5}
+
+/* Days list */
+.days-container{padding:18px}
+.day-row{
+  display:flex;align-items:center;gap:12px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px 16px;margin-bottom:10px;cursor:pointer;
+  transition:all .2s;
+}
+.day-row:active{border-color:var(--border2);transform:scale(.99)}
+.day-row.completed{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04)}
+.day-row.active-day{border-color:rgba(99,102,241,.4);background:rgba(99,102,241,.05)}
+.day-num{
+  width:36px;height:36px;border-radius:10px;background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--text2);
+  transition:all .2s;
+}
+.day-row.completed .day-num{background:rgba(16,185,129,.15);color:var(--emerald2)}
+.day-row.active-day .day-num{background:rgba(99,102,241,.15);color:var(--indigo2)}
+.day-info{flex:1;min-width:0}
+.day-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.day-sub{font-size:11px;color:var(--text3)}
+.day-chevron{width:16px;height:16px;color:var(--text3);flex-shrink:0}
+
+/* Session view */
+.session-wrap{padding:0}
+.session-header{
+  padding:20px 18px 16px;
+  background:linear-gradient(160deg,#0d1b35 0%,#0a0f1e 70%);
+  border-bottom:1px solid var(--border);
+}
+.session-day-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);
+  border-radius:8px;padding:5px 12px;font-size:11px;font-weight:700;
+  color:var(--indigo2);letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;
+}
+.session-q{
+  font-family:var(--font-display);font-size:18px;line-height:1.45;
+  color:var(--text);font-style:italic;
+}
+.session-body{padding:18px}
+.lines-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.line-input-row{display:flex;align-items:center;gap:8px}
+.line-num{
+  font-family:var(--font-mono);font-size:10px;color:var(--text3);
+  width:18px;text-align:right;flex-shrink:0;padding-top:10px;
+}
+.line-input{
+  flex:1;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:9px 12px;font-family:var(--font-body);
+  font-size:13px;color:var(--text);outline:none;transition:border-color .2s;
+  line-height:1.4;
+}
+.line-input::placeholder{color:var(--text3)}
+.line-input:focus{border-color:var(--indigo)}
+/* lines auto-show progressively */
+.line-input-row.hidden{display:none}
+
+/* AI Response card */
+.ai-response{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:16px;
+  animation:fadeUp .4s ease forwards;
+}
+.ai-response-header{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,rgba(99,102,241,.08),transparent);
+}
+.ai-avatar{
+  width:32px;height:32px;border-radius:10px;
+  background:linear-gradient(135deg,var(--indigo),var(--violet));
+  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;
+}
+.ai-meta-title{font-size:13px;font-weight:700;color:var(--text)}
+.ai-meta-sub{font-size:10px;color:var(--text3);letter-spacing:.3px}
+.ai-response-body{padding:18px}
+.ai-block{margin-bottom:20px}
+.ai-block:last-child{margin-bottom:0}
+.ai-block-title{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.ai-block-title.t-mirror{color:var(--indigo2)}
+.ai-block-title.t-energy{color:var(--amber)}
+.ai-block-title.t-action{color:var(--emerald2)}
+.ai-block-title .bi{width:14px;height:14px}
+.ai-block-content{
+  font-size:13.5px;line-height:1.8;color:var(--text2);
+}
+.ai-block-content strong{color:var(--text);font-weight:600}
+
+/* ===== TEST SCREEN ===== */
+.test-hero{padding:20px 18px 16px;background:linear-gradient(160deg,#0d1b35 0%,#0a0f1e 70%);border-bottom:1px solid var(--border)}
+.test-progress-bar{height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-bottom:16px}
+.test-progress-fill{height:100%;background:linear-gradient(90deg,var(--amber),#f59e0b);border-radius:2px;transition:width .4s ease}
+.test-step{display:none;padding:18px;animation:fadeUp .3s ease forwards}
+.test-step.active{display:block}
+.test-q{font-family:var(--font-display);font-size:19px;line-height:1.4;color:var(--text);margin-bottom:6px}
+.test-q-sub{font-size:12px;color:var(--text3);margin-bottom:20px}
+.choice-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.choice-opt{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);padding:14px 16px;
+  cursor:pointer;transition:all .2s;
+}
+.choice-opt:active{transform:scale(.98)}
+.choice-opt.selected{border-color:var(--amber);background:rgba(245,158,11,.06)}
+.choice-letter{
+  width:28px;height:28px;border-radius:8px;background:var(--surface2);
+  font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .2s;
+}
+.choice-opt.selected .choice-letter{background:var(--amber);color:#0a0f1e}
+.choice-text{font-size:13px;color:var(--text2);line-height:1.5;padding-top:4px}
+.choice-opt.selected .choice-text{color:var(--text)}
+
+/* Test result */
+.result-hero{
+  padding:24px 18px;
+  background:linear-gradient(160deg,#0d1b35 0%,#0a0f1e 70%);
+  border-bottom:1px solid var(--border);text-align:center;
+}
+.result-badge-lg{
+  width:72px;height:72px;border-radius:20px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin:0 auto 16px;
+}
+.result-type{font-family:var(--font-display);font-size:22px;color:var(--text);margin-bottom:6px}
+.result-tagline{font-size:13px;color:var(--text2);line-height:1.55}
+
+/* ===== SOULMATE SCREEN ===== */
+.sm-hero{
+  padding:24px 18px 20px;
+  background:linear-gradient(160deg,#1a0a2e 0%,#0a0f1e 70%);
+  border-bottom:1px solid rgba(244,63,94,.15);
+}
+.sm-tagline{font-family:var(--font-display);font-style:italic;font-size:26px;color:var(--text);line-height:1.3;margin-bottom:8px}
+.sm-sub{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* ===== PROFILE SCREEN ===== */
+.profile-wrap{padding:18px}
+.profile-avatar-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;text-align:center;margin-bottom:16px;
+}
+.prof-avatar{
+  width:80px;height:80px;border-radius:50%;margin:0 auto 14px;
+  background:linear-gradient(135deg,var(--indigo),var(--violet));
+  display:flex;align-items:center;justify-content:center;font-size:32px;
+}
+.prof-name{font-family:var(--font-display);font-size:22px;color:var(--text);margin-bottom:4px}
+.prof-sub{font-size:13px;color:var(--text2)}
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px;text-align:center;
+}
+.stat-val{font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--text);display:block;margin-bottom:4px}
+.stat-lbl{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
+.menu-item{
+  display:flex;align-items:center;gap:14px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:15px 16px;cursor:pointer;transition:all .2s;margin-bottom:8px;
+}
+.menu-item:active{background:var(--surface2);border-color:var(--border2)}
+.menu-item-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.menu-item-text{flex:1}
+.menu-item-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
+.menu-item-sub{font-size:11px;color:var(--text3)}
+.menu-chevron{color:var(--text3);width:16px;height:16px}
+
+/* ===== TOAST ===== */
+.toast{
+  position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);
+  background:var(--surface3);border:1px solid var(--border2);border-radius:var(--radius-sm);
+  padding:12px 20px;font-size:13px;font-weight:500;color:var(--text);
+  z-index:400;opacity:0;transition:all .3s;white-space:nowrap;max-width:380px;
+  box-shadow:var(--shadow-lg);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div id="shell">
+  <div class="scroll-area">
+
+    <!-- ===== HOME ===== -->
+    <div class="screen active" id="s-home">
+      <header class="app-header">
+        <div class="logo">
+          <span class="logo-icon">⚡</span>
+          <span class="logo-text"><span>ENERGIYA</span></span>
+        </div>
+        <div class="header-actions">
+          <div class="icon-btn" id="notif-btn" title="Bildirishnomalar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-dot"></span>
+          </div>
+          <div class="icon-btn" id="prof-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+        </div>
+      </header>
+
+      <div class="home-hero">
+        <div class="home-greeting">
+          <div class="g-time" id="greeting-time">Xayrli kun</div>
+          <h1>Quvvatingiz <em>sizda.</em></h1>
+          <p>Har kunlik 15 daqiqa — hayotingizni tubdan o'zgartiradi.</p>
+        </div>
+        <div class="streak-bar">
+          <div class="streak-item">
+            <span class="streak-val" id="s-streak">0</span>
+            <span class="streak-lbl">Kun ketma-ket</span>
+          </div>
+          <div class="streak-divider"></div>
+          <div class="streak-item">
+            <span class="streak-val" id="s-sessions">0</span>
+            <span class="streak-lbl">Seans</span>
+          </div>
+          <div class="streak-divider"></div>
+          <div class="streak-item">
+            <span class="streak-val" id="s-insights">0</span>
+            <span class="streak-lbl">Tahlil</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mod-grid">
+        <p class="sect-label">Modullar</p>
+
+        <!-- ICHKIDAGI MEN -->
+        <div class="mod-card glow-1" id="card-ichki">
+          <div class="mod-card-inner">
+            <div class="mod-card-header">
+              <div class="mod-icon i-indigo">🧠</div>
+              <svg class="mod-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="mod-title">Ichkidagi Men</div>
+            <div class="mod-desc">7 kunlik chuqur psixologik taftish. Har kuni 30 satrga hissiyotlaringizni to'king — AI sizning yashirin ssenariylaringizni fosh qiladi.</div>
+            <div class="mod-meta">
+              <span class="tag tag-indigo">7 kun</span>
+              <div class="mod-prog"><div class="mod-prog-fill" id="prog-ichki" style="width:0%"></div></div>
+              <span class="mod-prog-text" id="prog-ichki-txt">0/7</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOULMATE -->
+        <div class="mod-card glow-2" id="card-soulmate">
+          <div class="mod-card-inner">
+            <div class="mod-card-header">
+              <div class="mod-icon i-rose">❤️</div>
+              <svg class="mod-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="mod-title">Soulmate</div>
+            <div class="mod-desc">Munosabatlar auditi. 7 kunlik oila va juftlik dinamikasi tahlili. Nikoh ko'zgusi sizga haqiqatni ko'rsatadi.</div>
+            <div class="mod-meta">
+              <span class="tag tag-rose">7 kun</span>
+              <div class="mod-prog"><div class="mod-prog-fill green" id="prog-soul" style="width:0%"></div></div>
+              <span class="mod-prog-text" id="prog-soul-txt">0/7</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- IQTIDOR TESTI -->
+        <div class="mod-card glow-3" id="card-test">
+          <div class="mod-card-inner">
+            <div class="mod-card-header">
+              <div class="mod-icon i-amber">🎯</div>
+              <svg class="mod-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="mod-title">Iqtidor Testi</div>
+            <div class="mod-desc">10 savollik diagnostika. Sizning haqiqiy yo'nalishingiz: Raqamli Arxitektor, Emotsional Metanutr, Tizim Strategi yoki Amaliy Brand Ijodkori.</div>
+            <div class="mod-meta">
+              <span class="tag tag-violet">10 savol</span>
+              <span id="test-done-tag" style="display:none" class="tag tag-emerald">✓ Yakunlangan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ICHKIDAGI MEN MODULE ===== -->
+    <div class="screen" id="s-ichki">
+      <header class="app-header">
+        <div class="logo"><span class="logo-icon">🧠</span><span class="logo-text">Ichkidagi Men</span></div>
+        <div class="header-actions"><div class="icon-btn back-to-home"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+      </header>
+
+      <!-- DAYS LIST VIEW -->
+      <div id="ichki-days-view">
+        <div class="module-header">
+          <p class="mh-sub">7 kunlik psixologik taftish dasturi. Har kuni yangi savol — ichki jarohatlaringizni fosh qiling.</p>
+        </div>
+        <div class="days-container" id="ichki-days-list"></div>
+      </div>
+
+      <!-- SESSION VIEW -->
+      <div id="ichki-session-view" style="display:none">
+        <div class="session-header">
+          <button class="back-btn" id="ichki-back-to-days">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Kunlar
+          </button>
+          <div class="session-day-badge" id="ichki-day-badge">1-KUN</div>
+          <div class="session-q" id="ichki-session-q"></div>
+        </div>
+        <div class="session-body">
+          <div class="input-label mb-8">Hissiyotlaringizni to'king (1-30 satr)</div>
+          <div class="lines-grid" id="ichki-lines"></div>
+          <button class="btn btn-primary mt-4" id="ichki-submit-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> AI tahlilini olish
+          </button>
+          <div id="ichki-ai-result" style="display:none;margin-top:20px"></div>
+          <div id="ichki-closing-word" style="display:none;margin-top:12px" class="card-sm">
+            <p style="font-size:13px;color:var(--emerald2);font-style:italic;line-height:1.7" id="ichki-closing-text"></p>
+          </div>
+          <button class="btn btn-ghost mt-12" id="ichki-complete-btn" style="display:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Kunni yakunlash
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SOULMATE MODULE ===== -->
+    <div class="screen" id="s-soulmate">
+      <header class="app-header">
+        <div class="logo"><span class="logo-icon">❤️</span><span class="logo-text">Soulmate</span></div>
+        <div class="header-actions"><div class="icon-btn back-to-home"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+      </header>
+
+      <div id="soul-days-view">
+        <div class="module-header" style="border-bottom:1px solid rgba(244,63,94,.15);background:linear-gradient(160deg,#1a0a2e 0%,#0a0f1e 70%)">
+          <p class="mh-sub">7 kunlik munosabatlar auditi. Oila va juftlik dinamikasini chuqur tahlil qiling.</p>
+        </div>
+        <div class="days-container" id="soul-days-list"></div>
+      </div>
+
+      <div id="soul-session-view" style="display:none">
+        <div class="session-header" style="background:linear-gradient(160deg,#1a0a2e 0%,#0a0f1e 70%);border-bottom:1px solid rgba(244,63,94,.15)">
+          <button class="back-btn" id="soul-back-to-days"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Kunlar</button>
+          <div class="session-day-badge" style="background:rgba(244,63,94,.12);border-color:rgba(244,63,94,.2);color:#fb7185" id="soul-day-badge">1-KUN</div>
+          <div class="session-q" id="soul-session-q"></div>
+        </div>
+        <div class="session-body">
+          <div class="input-label mb-8">Munosabatlardagi og'riqlaringizni yozing (1-20 satr)</div>
+          <div class="lines-grid" id="soul-lines"></div>
+          <button class="btn btn-primary mt-4" id="soul-submit-btn" style="background:linear-gradient(135deg,#be185d,var(--rose))">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> AI tahlilini olish
+          </button>
+          <div id="soul-ai-result" style="display:none;margin-top:20px"></div>
+          <div id="soul-closing-word" style="display:none;margin-top:12px" class="card-sm">
+            <p style="font-size:13px;color:#fb7185;font-style:italic;line-height:1.7" id="soul-closing-text"></p>
+          </div>
+          <button class="btn btn-ghost mt-12" id="soul-complete-btn" style="display:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Kunni yakunlash
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== IQTIDOR TESTI ===== -->
+    <div class="screen" id="s-test">
+      <header class="app-header">
+        <div class="logo"><span class="logo-icon">🎯</span><span class="logo-text">Iqtidor Testi</span></div>
+        <div class="header-actions"><div class="icon-btn back-to-home"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+      </header>
+
+      <!-- TEST INTRO -->
+      <div id="test-intro-view">
+        <div class="test-hero">
+          <div class="session-day-badge" style="background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.2);color:var(--amber);margin-bottom:12px">10 Savol</div>
+          <div class="test-q">Haqiqiy Iqtidoringizni Kashf Eting</div>
+          <p style="font-size:13px;color:var(--text2);margin-top:8px;line-height:1.6">Har bir savolni diqqat bilan o'qing. Eng birinchi, ichingizdan chiqqan javobi tanlang. O'ylama — his qiling.</p>
+        </div>
+        <div style="padding:18px">
+          <button class="btn btn-primary" id="start-test-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Testni boshlash
+          </button>
+        </div>
+      </div>
+
+      <!-- TEST QUESTIONS -->
+      <div id="test-questions-view" style="display:none">
+        <div class="test-hero">
+          <div class="test-progress-bar"><div class="test-progress-fill" id="test-prog-fill" style="width:10%"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="sect-label" id="test-q-label" style="margin-bottom:0">Savol 1/10</span>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--text3)" id="test-score-display">A:0 B:0 C:0 D:0</span>
+          </div>
+        </div>
+        <div id="test-steps-wrap" style="position:relative;overflow:hidden"></div>
+      </div>
+
+      <!-- TEST RESULT -->
+      <div id="test-result-view" style="display:none">
+        <div class="result-hero">
+          <div class="result-badge-lg" id="result-badge-lg">🎯</div>
+          <div class="result-type" id="result-type-name">Raqamli Arxitektor</div>
+          <div class="result-tagline" id="result-tagline"></div>
+        </div>
+        <div style="padding:18px">
+          <div id="test-result-content"></div>
+          <button class="btn btn-ghost mt-16" id="retake-test-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Testni qayta topshirish
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROFILE ===== -->
+    <div class="screen" id="s-profile">
+      <header class="app-header">
+        <div class="logo"><span class="logo-icon">👤</span><span class="logo-text">Profil</span></div>
+        <div class="header-actions"><div class="icon-btn back-to-home"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+      </header>
+      <div class="profile-wrap">
+        <div class="profile-avatar-wrap">
+          <div class="prof-avatar">🌟</div>
+          <div class="prof-name">ENERGIYA Foydalanuvchi</div>
+          <div class="prof-sub">Transformatsiya yo'lida</div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card">
+            <span class="stat-val" id="pstat-streak">0</span>
+            <span class="stat-lbl">Streak</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" id="pstat-days">0</span>
+            <span class="stat-lbl">Kun</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" id="pstat-insights">0</span>
+            <span class="stat-lbl">Tahlil</span>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-icon" style="background:rgba(99,102,241,.12)">💡</div>
+          <div class="menu-item-text">
+            <div class="menu-item-title">Menning yo'nalishim</div>
+            <div class="menu-item-sub" id="pstat-type">Test topshirilmagan</div>
+          </div>
+          <svg class="menu-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="menu-item" id="reset-btn">
+          <div class="menu-item-icon" style="background:rgba(244,63,94,.1)">🔄</div>
+          <div class="menu-item-text">
+            <div class="menu-item-title">Ma'lumotlarni tozalash</div>
+            <div class="menu-item-sub">Barcha progress o'chiriladi</div>
+          </div>
+          <svg class="menu-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <!-- BOTTOM NAV -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" id="nav-home">
+      <svg class="nb-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="nb-label">Bosh</span>
+    </button>
+    <button class="nav-btn" id="nav-ichki">
+      <svg class="nb-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-1.07-4.89A3 3 0 0 1 3.5 10.5a3 3 0 0 1 2.5-2.96A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 1.07-4.89A3 3 0 0 0 20.5 10.5a3 3 0 0 0-2.5-2.96A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+      <span class="nb-label">Ichkim</span>
+    </button>
+    <button class="nav-btn" id="nav-soulmate">
+      <svg class="nb-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span class="nb-label">Soulmate</span>
+    </button>
+    <button class="nav-btn" id="nav-test">
+      <svg class="nb-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span class="nb-label">Test</span>
+    </button>
+    <button class="nav-btn" id="nav-profile">
+      <svg class="nb-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nb-label">Profil</span>
+    </button>
+  </nav>
+</div><!-- /shell -->
+
+<!-- Global Loading -->
+<div id="global-loading">
+  <div class="spinner"></div>
+  <p>AI tahlil qilmoqda<span class="l-dots"></span></p>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+// ===== LUCIDE ICONS =====
+// ===== STATE =====
+var state = {
+  ichkiCompleted: {},
+  soulCompleted: {},
+  ichkiAnswers: {},
+  soulAnswers: {},
+  testDone: false,
+  testResult: null,
+  streak: 0,
+  sessions: 0,
+  insights: 0
+};
+function loadState(){
+  try{
+    var s = localStorage.getItem('energiya_v1');
+    if(s) state = JSON.parse(s);
+  }catch(e){}
+}
+function saveState(){ try{ localStorage.setItem('energiya_v1', JSON.stringify(state)); }catch(e){} }
+loadState();
+
+// ===== GREETING =====
+function setGreeting(){
+  var h = new Date().getHours();
+  var g = h < 12 ? 'Xayrli tong' : h < 17 ? 'Xayrli kun' : h < 21 ? 'Xayrli kech' : 'Xayrli tun';
+  document.getElementById('greeting-time').textContent = g;
+}
+setGreeting();
+
+// ===== NAVIGATION =====
+var screenOrder = ['s-home','s-ichki','s-soulmate','s-test','s-profile'];
+var currentScreen = 's-home';
+
+function goTo(id, dir){
+  if(id === currentScreen) return;
+  var prev = document.getElementById(currentScreen);
+  var next = document.getElementById(id);
+  prev.classList.remove('active');
+  next.classList.add('active');
+  var d = dir || (screenOrder.indexOf(id) > screenOrder.indexOf(currentScreen) ? 'to-right' : 'to-left');
+  next.classList.add(d);
+  setTimeout(function(){ next.classList.remove(d); }, 400);
+  currentScreen = id;
+  document.getElementById('shell').querySelector('.scroll-area').scrollTop = 0;
+  // Update nav
+  document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+  var navMap = {'s-home':'nav-home','s-ichki':'nav-ichki','s-soulmate':'nav-soulmate','s-test':'nav-test','s-profile':'nav-profile'};
+  var nb = document.getElementById(navMap[id]);
+  if(nb) nb.classList.add('active');
+}
+
+// Nav buttons
+document.getElementById('nav-home').onclick = function(){ goTo('s-home'); };
+document.getElementById('nav-ichki').onclick = function(){ goTo('s-ichki'); };
+document.getElementById('nav-soulmate').onclick = function(){ goTo('s-soulmate'); };
+document.getElementById('nav-test').onclick = function(){ goTo('s-test'); };
+document.getElementById('nav-profile').onclick = function(){ goTo('s-profile'); };
+
+// Module cards
+document.getElementById('card-ichki').onclick = function(){ goTo('s-ichki'); };
+document.getElementById('card-soulmate').onclick = function(){ goTo('s-soulmate'); };
+document.getElementById('card-test').onclick = function(){ goTo('s-test'); };
+
+// Back to home
+document.querySelectorAll('.back-to-home').forEach(function(b){
+  b.onclick = function(){ goTo('s-home', 'to-left'); };
+});
+document.getElementById('prof-btn').onclick = function(){ goTo('s-profile'); };
+
+// ===== TOAST =====
+function showToast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+
+// ===== LOADING =====
+function showLoading(){ document.getElementById('global-loading').classList.add('show'); }
+function hideLoading(){ document.getElementById('global-loading').classList.remove('show'); }
+
+// ===== STATS UPDATE =====
+function updateStats(){
+  var ichkiDone = Object.keys(state.ichkiCompleted).filter(function(k){ return state.ichkiCompleted[k]; }).length;
+  var soulDone = Object.keys(state.soulCompleted).filter(function(k){ return state.soulCompleted[k]; }).length;
+  state.sessions = ichkiDone + soulDone;
+  state.insights = state.sessions;
+
+  document.getElementById('s-streak').textContent = state.streak;
+  document.getElementById('s-sessions').textContent = state.sessions;
+  document.getElementById('s-insights').textContent = state.insights;
+
+  document.getElementById('prog-ichki').style.width = Math.round(ichkiDone/7*100) + '%';
+  document.getElementById('prog-ichki-txt').textContent = ichkiDone + '/7';
+  document.getElementById('prog-soul').style.width = Math.round(soulDone/7*100) + '%';
+  document.getElementById('prog-soul-txt').textContent = soulDone + '/7';
+
+  document.getElementById('pstat-streak').textContent = state.streak;
+  document.getElementById('pstat-days').textContent = state.sessions;
+  document.getElementById('pstat-insights').textContent = state.insights;
+
+  if(state.testResult){
+    document.getElementById('test-done-tag').style.display = 'inline-flex';
+    document.getElementById('pstat-type').textContent = state.testResult.name;
+  }
+  saveState();
+}
+updateStats();
+
+// ===== ICHKIDAGI MEN DATA =====
+var ichkiDays = [
+  {num:1,title:'Haqiqat va Istak',sub:'Majburiyat va xohishlar',q:'Bugun hayotingizda sizni eng ko\'p charchatayotgan majburiyatingiz nima va aslida nima xohlayapsiz? Ichingizdagi hamma norozilikni pastdagi satrlarga boricha to\'kib soling.',closing:'Norozilikni tan olish — o\'zgarishning birinchi qadamidir. Siz bugun buni uddaladingiz!',lines:30},
+  {num:2,title:'Xayollar Auditi',sub:'Miyani tozalash',q:'Bugun kun bo\'yi miyangizni eng ko\'p band qilgan, tinchlik bermagan va energiyangizni so\'rgan barcha o\'y-xayollarni ketma-ket yozib chiqing.',closing:'Miyangizdagi chiqindini qog\'ozga ko\'chirdingiz. U yerda joy ochildi, yengillikni his qiling.',lines:30},
+  {num:3,title:'Tana va Energiya',sub:'Somatik diagnostika',q:'Bugun qaysi daqiqalarda ichingizda siqilish, og\'riq yoki charchoq sezdingiz va o\'shanda miyangizda aynan qaysi o\'ylar aylanayotgan edi? Barchasini fosh qiling.',closing:'Tana aldamaydi. Siz energiyangizni o\'g\'irlayotgan yashirin fikrlarni fosh qildingiz!',lines:30},
+  {num:4,title:'Shablonlarni Sindirish',sub:'Takrorlanuvchi ssenariylar',q:'Hayotingizda qaysi eski muammo, xatolik yoki qo\'rquv ssenariysi yillar davomida qayta-qayta takrorlanyapti? Uni tahlil qiling.',closing:'Eski zanjir uzildi. Muammo bugungi kunda emas, o\'sha eski fikrlash shablonida edi.',lines:30},
+  {num:5,title:'Shaxsiy Chegaralar',sub:'Chegara va alamnlar',q:'Boshqalarning ko\'ngli, tinchligi yoki injiqligi uchun o\'z istaklaringizni bo\'g\'ib yashayotgan qaysi qismingiz sizga eng qattiq og\'riq beryapti? Ichingizdagi alamni to\'kib soling.',closing:'Boshqalarga \'yo\'q\' deyish — o\'zingizga \'ha\' deyishdir. O\'zligingiz poydevorini chizdingiz.',lines:30},
+  {num:6,title:'Bola Pozitsiyasidan Chiqish',sub:'Mas\'uliyat va kuch',q:'Hayotingizdagi to\'xtashlar va muammolar uchun hali ham kimni yoki qaysi vaziyatni ayblayapsiz? Bor haqiqatni yozing.',closing:'Siz bugun jabrdiyda obrazidan chiqdingiz. Hayotingiz uchun mas\'uliyat endi to\'liq holda o\'zingizda!',lines:30},
+  {num:7,title:'Yangi Qaror',sub:'Yangi hayot qoidalari',q:'Eski charchagan ssenariylarni qoldirib, bugundan mutlaqo boshqacha yashash uchun o\'zingizga qaysi qat\'iy va\'dalarni berasiz? Yangi hayot qoidalaringizni muhrlang.',closing:'7 kunlik taftish yakunlandi! Bugundan hayotingizni eski avtomatizmlar emas, yangi qarorlaringiz boshqaradi.',lines:30}
+];
+
+// ===== SOULMATE DATA =====
+var soulDays = [
+  {num:1,title:'Eski Andozalar',sub:'Ota-ona modeli',q:'Turmush o\'rtog\'ingiz bilan muloqotda ota-onangizning qaysi salbiy munosabat modelini beixtiyor takrorlayotganingizni sezyapsiz? Ichingizdagi qo\'rquv va haqiqatni yozing.',closing:'Ota-onangizning ssenariysi sizning taqdiringiz emas. Bugun siz o\'z munosabatlaringiz tarixini yozyapsiz!',lines:20},
+  {num:2,title:'Niqoblar va Radikal Haqiqat',sub:'Yashirin "Men"',q:'Munosabatlarda \'yaxshi, ideal\' bo\'lib ko\'rinish uchun o\'zingizning qaysi haqiqiy xarakteringizni, istaklaringizni yashiryapsiz? Ichingizdagi soxtalik yukini to\'kib soling.',closing:'Niqoblar charchatadi. Haqiqiy va mukammal bo\'lmagan \'Men\'ingiz munosabatlarda sevilishga loyiqroqdir.',lines:20},
+  {num:3,title:'Xafagarchilik va Bloklar',sub:'Proyeksion ginalar',q:'Juftingizdan ichingizda to\'planib qolgan, yuziga ayta olmagan, lekin sizni ich-etingizni yeyotgan qaysi eng qattiq xafagarchiliklaringiz bor? Hech qanday senzurasiz yozing.',closing:'Xafagarchilik — bu zahar ichib, qarshi tomonning o\'lishini kutishdir. Siz bugun bu zaharni tashqariga chiqardingiz.',lines:20},
+  {num:4,title:'Shaxsiy Hudud va Qurbonlik',sub:'Oila va o\'zlik',q:'Oila, bola-chaqa majburiyatlari ichida o\'zingizning shaxsiy rivojlanishingiz uchun qoldirgan hududingiz bormi? O\'zingizni butunlay qurbon qilib yuborayotgan qismlaringizni ochib bering.',closing:'Munosabatlar — o\'zligingizni yo\'qotish evaziga qurilmaydi. Siz alohida shaxssiz, shuni unutmang.',lines:20},
+  {num:5,title:'Tashqi Aralashuv',sub:'Chegara himoyasi',q:'Munosabatlaringizga tashqi muhitning (qaynona, qaynota, ota-ona) fikrlari qanchalik ta\'sir qilyapti? Ularning bosimi sabab juftingiz bilan muloqotingiz qayerda buzilyapti? Haqiqatni muhrlang.',closing:'Oilaning muqaddas chegarasi bo\'ladi. Uni tashqi shamollardan himoya qilish — yetuklik belgisidir.',lines:20},
+  {num:6,title:'Muloqot va Qabul Qilish',sub:'O\'zgartirish illyuziyasi',q:'Siz juftingizni o\'zgartirishga, uni o\'zingiz xohlagan qolipga solishga qanchalik urinyapsiz? Uni boricha qabul qila olmayotgan qaysi jihatlari sizni qiynayapti? Fosh qiling.',closing:'Boshqalarni o\'zgartirish — illyuziya. Inson faqat o\'zini o\'zgartira oladi va shunda atrof ham o\'zgaradi.',lines:20},
+  {num:7,title:'Yangi Ittifoq Kodlari',sub:'Soulmate manifestasi',q:'Eski urushlar, ginalar va talablarni shu yerda qoldirib, munosabatlaringizni sevgi va o\'zaro hurmat asosida yangitdan qurish uchun o\'zingizga qaysi 3 ta oltin qoidani berasiz? Muhrlang.',closing:'Munosabatlar auditi yakunlandi! Bugundan sizning ittifoqingizni eski jarohatlar emas, yangi sevgi kodlari boshqaradi.',lines:20}
+];
+
+// ===== RENDER DAYS LIST =====
+function renderDaysList(days, completedMap, containerId, onClickFn){
+  var el = document.getElementById(containerId);
+  el.innerHTML = '';
+  days.forEach(function(d){
+    var done = completedMap[d.num];
+    var div = document.createElement('div');
+    div.className = 'day-row' + (done ? ' completed' : '');
+    div.innerHTML = '<div class="day-num">' + (done ? '✓' : d.num) + '</div>' +
+      '<div class="day-info"><div class="day-title">' + d.num + '-kun: ' + d.title + '</div><div class="day-sub">' + d.sub + '</div></div>' +
+      '<svg class="day-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+    div.onclick = function(){ onClickFn(d.num); };
+    el.appendChild(div);
+  });
+}
+
+// ===== BUILD LINE INPUTS =====
+function buildLines(containerId, count){
+  var el = document.getElementById(containerId);
+  el.innerHTML = '';
+  for(var i=1;i<=count;i++){
+    var row = document.createElement('div');
+    row.className = 'line-input-row';
+    row.id = 'line-row-' + i;
+    row.innerHTML = '<span class="line-num">' + i + '</span><input type="text" class="line-input" id="line-' + i + '" placeholder="' + i + '-satr..." maxlength="200">';
+    el.appendChild(row);
+    // Auto-show next on input
+    (function(idx){
+      var inp = row.querySelector('input');
+      inp.addEventListener('input', function(){
+        if(this.value.trim() && idx < count){
+          // lines always visible in this version
+        }
+      });
+    })(i);
+  }
+}
+
+function getLineValues(count){
+  var arr = [];
+  for(var i=1;i<=count;i++){
+    var el = document.getElementById('line-'+i);
+    if(el) arr.push(el.value.trim());
+  }
+  return arr.filter(function(v){ return v !== ''; });
+}
+
+// ===== ICHKIDAGI MEN FLOW =====
+var currentIchkiDay = null;
+
+function openIchkiDay(num){
+  currentIchkiDay = num;
+  var d = ichkiDays[num-1];
+  document.getElementById('ichki-days-view').style.display = 'none';
+  document.getElementById('ichki-session-view').style.display = 'block';
+  document.getElementById('ichki-day-badge').textContent = num + '-KUN: ' + d.title.toUpperCase();
+  document.getElementById('ichki-session-q').textContent = d.q;
+  buildLines('ichki-lines', d.lines);
+  document.getElementById('ichki-ai-result').style.display = 'none';
+  document.getElementById('ichki-ai-result').innerHTML = '';
+  document.getElementById('ichki-closing-word').style.display = 'none';
+  document.getElementById('ichki-complete-btn').style.display = 'none';
+  // Restore saved answers
+  var saved = state.ichkiAnswers[num] || [];
+  saved.forEach(function(v, i){
+    var inp = document.getElementById('line-'+(i+1));
+    if(inp) inp.value = v;
+  });
+  document.getElementById('shell').querySelector('.scroll-area').scrollTop = 0;
+}
+
+document.getElementById('ichki-back-to-days').onclick = function(){
+  document.getElementById('ichki-days-view').style.display = 'block';
+  document.getElementById('ichki-session-view').style.display = 'none';
+};
+
+document.getElementById('ichki-submit-btn').onclick = function(){
+  var vals = getLineValues(ichkiDays[currentIchkiDay-1].lines);
+  if(vals.length < 3){
+    showToast('Kamida 3 ta satr yozing ⚡');
+    return;
+  }
+  state.ichkiAnswers[currentIchkiDay] = vals;
+  saveState();
+  callAI_ichki(currentIchkiDay, vals);
+};
+
+document.getElementById('ichki-complete-btn').onclick = function(){
+  state.ichkiCompleted[currentIchkiDay] = true;
+  state.streak = Math.max(state.streak, Object.keys(state.ichkiCompleted).length);
+  updateStats();
+  renderDaysList(ichkiDays, state.ichkiCompleted, 'ichki-days-list', openIchkiDay);
+  document.getElementById('ichki-days-view').style.display = 'block';
+  document.getElementById('ichki-session-view').style.display = 'none';
+  showToast('✓ ' + currentIchkiDay + '-kun yakunlandi!');
+};
+
+async function callAI_ichki(dayNum, lines){
+  var d = ichkiDays[dayNum-1];
+  var arrStr = lines.map(function(v,i){ return (i+1) + ': "' + v + '"'; }).join(', ');
+  var prompts = [
+    'Siz — "ENERGIYA" ilovasining transformatsion kouchi va chuqur tizimli psixoterapevtisiz.\n[KONTEKST]: ' + dayNum + '-kun: "' + d.title.toUpperCase() + '". Foydalanuvchi o\'zi istamagan majburiyatlar va ichki noroziliklarini satrlik massivga to\'kib soldi.\n[INPUT LOGIC]: Foydalanuvchining [' + arrStr + '] ko\'rinishidagi satrlarini bitta yaxlit emotsional oqim sifatida o\'qing.\n[VAZIFA]: Foydalanuvchining javobini tahlil qilib, maksimal 250-300 so\'zda quyidagi 3 blokda javob bering:\n⚡️ 1. KO\'ZGU (The Mirror): Foydalanuvchi "bajarishim shart" deb hisoblayotgan majburiyat aslida kimning ssenariysi ekanini va uning ostida qanday qo\'rquv yotganini fosh qiling.\n🔋 2. ENERGIYA FILTRI (Energy Leak): Norozilikni ichga yutish va majburiy rollarni o\'ynash orqali inson o\'z shaxsiy o\'sishi va ijodiy quvvatini qanchalik bo\'g\'ayotganini ko\'rsating.\n🌱 3. MIKRO-DOFAMIN QADAMI (The Micro-Action): Bugun o\'sha yuklardan kamida bittasiga "Yo\'q" deya olish bo\'yicha 15 daqiqalik amaliy vazifa bering.\n[TAQIQLAR]: "Sabr qiling", "Hammasi yaxshi bo\'ladi" kabi gaplar taqiqlangan. "Siz" deb murojaat qiling. Toza Markdown formatidan foydalaning.',
+    'Siz — "ENERGIYA" ilovasining kognitiv-xulq-atvor bo\'yicha ekspertisiz.\n[KONTEKST]: 2-kun: "XAYOLLAR AUDITI". [INPUT]: [' + arrStr + ']\n[VAZIFA]: 250-300 so\'zda 3 blok:\n⚡️ 1. KO\'ZGU: Xayollarning bosh mavzusini (o\'tmish pushmonimi yoki kelajak xavotiri?) va kognitiv tuzoqni aniqlang.\n🔋 2. ENERGIYA FILTRI: Bu xayollar Flow State va kreativlikni qanday bloklayotganini ko\'rsating.\n🌱 3. MIKRO-DOFAMIN: Uydan chiqmay bajariladigan 15 daqiqalik "Stop-texnika" bering.\n[TAQIQLAR]: "Fikr qilmang" kabi umumiy gaplar taqiqlangan. "Siz" deb murojaat qiling.',
+    'Siz — somatik psixologiya bo\'yicha transformatsion kouchsiz.\n[KONTEKST]: 3-kun: "TANA VA ENERGIYA". [INPUT]: [' + arrStr + ']\n[VAZIFA]: 250-300 so\'zda 3 blok:\n⚡️ 1. KO\'ZGU: Jismoniy simptomni yashirin emotsiya (aybdorlik, g\'azab, galam) bilan bog\'lang. Tana qayerda bloklanganini ko\'rsating.\n🔋 2. ENERGIYA FILTRI: Tana siqilishi energiyani qanday yo\'q qilayotganini tushuntiring.\n🌱 3. MIKRO-DOFAMIN: Oddiy somatik nafas yoki grounding mashqini tayinlang.\n[TAQIQLAR]: Tibbiy tashxis qo\'ymang. "Siz" deb murojaat qiling.',
+    'Siz — tizimli o\'zgarishlarni buzuvchi Senior kouchsiz.\n[KONTEKST]: 4-kun: "SHABLONLARNI SINDIRISH". [INPUT]: [' + arrStr + ']\n[VAZIFA]: 250-300 so\'zda 3 blok:\n⚡️ 1. KO\'ZGU: Avtomatik shablonning (qurbonlik, o\'zini kamsitish) mexanizmini ko\'rsating. Muammo o\'tmish ko\'zoynagida ekanini isbotlang.\n🔋 2. ENERGIYA FILTRI: Bir xil ssenariyni yashash kelajak potentsialini qanday qurbon qilayotganini ochib bering.\n🌱 3. MIKRO-DOFAMIN: Ssenariy qo\'zg\'alganda avtomatik reaksiyani teskari harakatga sindirish uchun bitta paradoksal qadam.\n"Siz" deb murojaat qiling.',
+    'Siz — shaxsiy chegaralar bo\'yicha transformatsion maslahatchisiz.\n[KONTEKST]: 5-kun: "SHAXSIY CHEGARALAR". [INPUT]: [' + arrStr + ']\n[VAZIFA]: 250-300 so\'zda 3 blok:\n⚡️ 1. KO\'ZGU: Kimning ko\'nglini olish uchun haqiqiy "Men"ini sotayotganini va "rad etilish qo\'rquvi"ni fosh qiling.\n🔋 2. ENERGIYA FILTRI: Majburan "ha" deyish shaxsiy rivojlanish va kelajak loyihalardan qanday energiya o\'g\'irlayotganini tushuntiring.\n🌱 3. MIKRO-DOFAMIN: Bugun kichik bir masalada muloyim lekin qat\'iy "Yo\'q" deyish mashqi.\n"Siz" deb murojaat qiling.',
+    'Siz — jabrdiyda obrazidan chiqaruvchi Strategik Kouchsiz.\n[KONTEKST]: 6-kun: "BOLA POZITSIYASIDAN CHIQISH". [INPUT]: [' + arrStr + ']\n[VAZIFA]: 250-300 so\'zda 3 blok:\n⚡️ 1. KO\'ZGU: "Bola pozitsiyasi"da turganini (nolish, tashqini ayblash, qutqaruvchi kutish) radikal haqiqatgo\'ylik bilan ko\'rsating. Yagona "Qutqaruvchi" o\'zi ekanini anglating.\n🔋 2. ENERGIYA FILTRI: Tashqi omillarni ayblash 100% behuda energiya ekanini isbotlang.\n🌱 3. MIKRO-DOFAMIN: Bugun nolishni to\'xtatib, kattalarga xos 15 daqiqalik real harakat qadami.\n"Siz" deb murojaat qiling.',
+    'Siz — kelajak arxitekturasi bo\'yicha Master Kouchsiz.\n[KONTEKST]: 7-kun: "YANGI QAROR". [INPUT]: [' + arrStr + ']\n[VAZIFA]: 250-300 so\'zda 3 blok:\n⚡️ 1. KO\'ZGU: Yozilgan yangi qoidalar va va\'dalarning psixologik realizmini baholang. Qaysi qaror eng katta muvaffaqiyatga olib borishini tasdiqlang.\n🔋 2. ENERGIYA RE-GENERATSIYASI: O\'tmish yukidan qutulgan ong qanday ulkan quvvat hosil qilayotganini ko\'rsating.\n🌱 3. MIKRO-DOFAMIN: Yangi qarorlar matn bo\'lib qolib ketmasligi uchun 15 daqiqalik birinchi amaliy odatlar trakeri qadami.\n"Siz" deb murojaat qiling.'
+  ];
+
+  showLoading();
+  try{
+    var resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompts[dayNum-1]}]
+      })
+    });
+    var data = await resp.json();
+    hideLoading();
+    var text = (data.content||[]).map(function(c){ return c.text||''; }).join('\n');
+    renderAiResponse(text, 'ichki-ai-result');
+    document.getElementById('ichki-closing-word').style.display = 'block';
+    document.getElementById('ichki-closing-text').textContent = d.closing;
+    document.getElementById('ichki-complete-btn').style.display = 'flex';
+    state.insights++;
+    updateStats();
+    // Scroll to result
+    setTimeout(function(){
+      var el = document.getElementById('ichki-ai-result');
+      el.scrollIntoView({behavior:'smooth',block:'start'});
+    }, 300);
+  }catch(e){
+    hideLoading();
+    showToast('Xatolik yuz berdi. Internet aloqasini tekshiring.');
+  }
+}
+
+// ===== SOULMATE FLOW =====
+var currentSoulDay = null;
+
+function openSoulDay(num){
+  currentSoulDay = num;
+  var d = soulDays[num-1];
+  document.getElementById('soul-days-view').style.display = 'none';
+  document.getElementById('soul-session-view').style.display = 'block';
+  document.getElementById('soul-day-badge').textContent = num + '-KUN: ' + d.title.toUpperCase();
+  document.getElementById('soul-session-q').textContent = d.q;
+  buildLines('soul-lines', d.lines);
+  document.getElementById('soul-ai-result').style.display = 'none';
+  document.getElementById('soul-ai-result').innerHTML = '';
+  document.getElementById('soul-closing-word').style.display = 'none';
+  document.getElementById('soul-complete-btn').style.display = 'none';
+  var saved = state.soulAnswers[num] || [];
+  saved.forEach(function(v,i){
+    var inp = document.getElementById('line-'+(i+1));
+    if(inp) inp.value = v;
+  });
+  document.getElementById('shell').querySelector('.scroll-area').scrollTop = 0;
+}
+
+document.getElementById('soul-back-to-days').onclick = function(){
+  document.getElementById('soul-days-view').style.display = 'block';
+  document.getElementById('soul-session-view').style.display = 'none';
+};
+
+document.getElementById('soul-submit-btn').onclick = function(){
+  var vals = getLineValues(soulDays[currentSoulDay-1].lines);
+  if(vals.length < 3){ showToast('Kamida 3 ta satr yozing ⚡'); return; }
+  state.soulAnswers[currentSoulDay] = vals;
+  saveState();
+  callAI_soul(currentSoulDay, vals);
+};
+
+document.getElementById('soul-complete-btn').onclick = function(){
+  state.soulCompleted[currentSoulDay] = true;
+  state.streak = Math.max(state.streak, Object.keys(state.soulCompleted).length);
+  updateStats();
+  renderDaysList(soulDays, state.soulCompleted, 'soul-days-list', openSoulDay);
+  document.getElementById('soul-days-view').style.display = 'block';
+  document.getElementById('soul-session-view').style.display = 'none';
+  showToast('✓ ' + currentSoulDay + '-kun yakunlandi!');
+};
+
+async function callAI_soul(dayNum, lines){
+  var d = soulDays[dayNum-1];
+  var arrStr = lines.map(function(v,i){ return (i+1) + ': "' + v + '"'; }).join(', ');
+  var soulPrompts = [
+    'Siz — "ENERGIYA" ilovasining tizimli oilaviy psixoterapevtisiz.\n[KONTEKST]: 1-kun: "ESKI ANDOZALAR: OTA-ONA MODELI". [INPUT]: [' + arrStr + ']\n[VAZIFA]: Maksimal 250-300 so\'zda 3 ta blokda javob bering:\n⚡️ 1. NIKOH KO\'ZGU-SI: Bolalikda ko\'rgan model (otaning sovuqligi, onaning qurbonligi) bugun o\'z oilasida "avtomatizm" sifatida qanday ishlayotganini fosh qiling.\n🔋 2. ENERGIYA EVAKUATSIYASI: O\'zgalar xatosini takrorlash juftlik orasidagi ruhiy energiyani qanday so\'ndirmoqda.\n🌱 3. 15 DAQIQALIK YAQLINLIK QADAMI: O\'sha eski "avtomatik emotsional reaksiya" qo\'zg\'alganda uni to\'xtatib, boshqacha ijobiy xatti-harakat mashqi.\n[TAQIQLAR]: Ota-onani ayblamang. Markdown formatida yozing.',
+    'Siz — munosabatlar va assertivlik bo\'yicha kouchsiz.\n[KONTEKST]: 2-kun: "NIQOBLAR VA RADIKAL HAQIQAT". [INPUT]: [' + arrStr + ']\n⚡️ 1. NIKOH KO\'ZGU-SI: "Agar borimni ko\'rsatsam, meni tashlab ketishadi" qo\'rquvi va soxta xotirjamlik oilani ichkaridan yemirishini fosh qiling.\n🔋 2. ENERGIYA EVAKUATSIYASI: "Ideal juft" rolini o\'ynash mental energiyani qanday yo\'q qilayotganini ko\'rsating.\n🌱 3. 15 DAQIQALIK YAQLINLIK QADAMI: Bugun turmush o\'rtoqqa kichik haqiqiy ehtiyojni ayblovsiz, tinch ohangda aytish mashqi. Markdown formatida.',
+    'Siz — emotsional emansipatsiya bo\'yicha Master Kouchsiz.\n[KONTEKST]: 3-kun: "XAFAGARCHILIK VA PROYEKTSION BLOKLAR". [INPUT]: [' + arrStr + ']\n⚡️ 1. NIKOH KO\'ZGU-SI: Ginaning asl maqsadi manipulyatsiya ekanini, bu gina qaysi aytilmagan ochiq muloqot o\'rnini to\'ldirayotganini fosh qiling.\n🔋 2. ENERGIYA EVAKUATSIYASI: O\'tmishdagi ginalarni qayta-qayta aylantirish hayotiy va seksual energiyani qanday minusga ketkazayotganini ko\'rsating.\n🌱 3. 15 DAQIQALIK YAQLINLIK QADAMI: "Ginalarni muzlatish" vizualizatsiyasi yoki amaliy muloqot qoidasi. Markdown formatida.',
+    'Siz — oilaviy tizimlar va shaxsiy avtonomiya bo\'yicha ekspert-kouchsiz.\n[KONTEKST]: 4-kun: "SHAXSIY HUDUD VA QURBONLIK". [INPUT]: [' + arrStr + ']\n⚡️ 1. NIKOH KO\'ZGU-SI: O\'zini oilaga qurbon qilgan inson keyinchalik "minnatdorchilik" talab qila boshlashini fosh qiling.\n🔋 2. ENERGIYA EVAKUATSIYASI: Shaxsiy o\'sish bloklanganda maishiy maydalashish va depressiyaga energiya sarflanishini ko\'rsating.\n🌱 3. 15 DAQIQALIK YAQLINLIK QADAMI: Oila bilan kelishib, 15-30 daqiqalik "Shaxsiy Oltin Vaqt" e\'lon qilish. Markdown formatida.',
+    'Siz — oilaviy ierarxiya va tashqi chegaralarni himoya qilish bo\'yicha Senior terapevtisiz.\n[KONTEKST]: 5-kun: "TASHQI ARALASHUV". [INPUT]: [' + arrStr + ']\n⚡️ 1. NIKOH KO\'ZGU-SI: Tashqi a\'zolarni ayblash orqali juftlik o\'zaro ittifoqni mustahkamlay olmayotganini, er va xotin hali ota-onasidan psixologik ajralmaganini ko\'rsating.\n🔋 2. ENERGIYA EVAKUATSIYASI: Quvvat ichki ittifoq o\'rniga tashqi urushlar va g\'iybatga oqib ketayotganini ko\'rsating.\n🌱 3. 15 DAQIQALIK YAQLINLIK QADAMI: Uchinchi shaxslar muhokamasisiz, faqat ikki kishining umumiy orzusi yoki loyihasi haqida 15 daqiqa iliq suhbat. Markdown formatida.',
+    'Siz — qabul qilish psixologiyasi bo\'yicha Master Kouchsiz.\n[KONTEKST]: 6-kun: "MULOQOT VA QABUL QILISH". [INPUT]: [' + arrStr + ']\n⚡️ 1. NIKOH KO\'ZGU-SI: Juftini o\'zgartirishga urinish ota-onadek "ustozlik" pozitsiyasi ekanini, bu muhabbat va tenglikni qanday o\'ldirishini tushuntiring.\n🔋 2. ENERGIYA EVAKUATSIYASI: Voyaga yetgan insonni "tarbiyalash" 100% samarasiz energiya ekanini ko\'rsating.\n🌱 3. 15 DAQIQALIK YAQLINLIK QADAMI: Bugun juftingizning kamchiligi o\'rniga eng kichik bitta yaxshi ishi uchun chin dildan ko\'zlariga qarab "Rahmat" deng. Markdown formatida.',
+    'Siz — munosabatlar arxitekturasi bo\'yicha Oliy Master Kouchsiz.\n[KONTEKST]: 7-kun: "SOULMATE: YANGI ITTIFOQ KODLARI". [INPUT]: [' + arrStr + ']\n⚡️ 1. NIKOH KO\'ZGU-SI: Tanlangan yangi yo\'lning to\'g\'riligini va bu qarorlar oilaga tinchlik, baraka va joziba olib kelishini tasdiqlang.\n🔋 2. ENERGIYA RE-GENERATSIYASI: Oilada tinchlik bo\'lganda er-xotin bir-birining energiyasini kuchaytirishi (Sinorji effekti) shaxsiy biznes va o\'sishga qanday poydevor bo\'lishini ko\'rsating.\n🌱 3. 15 DAQIQALIK YAQLINLIK QADAMI: Har haftada bir marta ikki kishi chalg\'imasdan 15-20 daqiqalik "Ittifoq va muloqot daqiqasi" an\'anasini bugundan taqvimga kiriting. Markdown formatida.'
+  ];
+
+  showLoading();
+  try{
+    var resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:soulPrompts[dayNum-1]}]})
+    });
+    var data = await resp.json();
+    hideLoading();
+    var text = (data.content||[]).map(function(c){ return c.text||''; }).join('\n');
+    renderAiResponse(text, 'soul-ai-result', 'rose');
+    document.getElementById('soul-closing-word').style.display = 'block';
+    document.getElementById('soul-closing-text').textContent = d.closing;
+    document.getElementById('soul-complete-btn').style.display = 'flex';
+    state.insights++;
+    updateStats();
+    setTimeout(function(){
+      document.getElementById('soul-ai-result').scrollIntoView({behavior:'smooth',block:'start'});
+    }, 300);
+  }catch(e){
+    hideLoading();
+    showToast('Xatolik yuz berdi. Internet aloqasini tekshiring.');
+  }
+}
+
+// ===== RENDER AI RESPONSE =====
+function renderAiResponse(text, containerId, accent){
+  var el = document.getElementById(containerId);
+  el.style.display = 'block';
+  // Parse blocks
+  var blocks = [
+    {key:'KO\'ZGU|NIKOH KO\'ZGU|Mirror', icon:'zap', cls:'t-mirror', emoji:'⚡️'},
+    {key:'ENERGIYA|Energy', icon:'battery', cls:'t-energy', emoji:'🔋'},
+    {key:'MIKRO|15 DAQIQ|Action|YAQLINLIK', icon:'sprout', cls:'t-action', emoji:'🌱'}
+  ];
+  var sections = ['','',''];
+  var lines = text.split('\n');
+  var cur = -1;
+  lines.forEach(function(line){
+    var stripped = line.replace(/#+\s*/,'').replace(/\*\*/g,'').trim();
+    var matched = false;
+    blocks.forEach(function(b,i){
+      var keys = b.key.split('|');
+      keys.forEach(function(k){
+        if(stripped.toUpperCase().indexOf(k.toUpperCase()) !== -1 && (stripped.indexOf('1.') !== -1 || stripped.indexOf('2.') !== -1 || stripped.indexOf('3.') !== -1 || stripped.indexOf('⚡') !== -1 || stripped.indexOf('🔋') !== -1 || stripped.indexOf('🌱') !== -1)){
+          cur = i; matched = true;
+        }
+      });
+    });
+    if(!matched && cur >= 0) sections[cur] += line + '\n';
+  });
+
+  // If parsing failed, show as plain
+  var blockTitles = ['Ko\'zgu (The Mirror)', 'Energiya Filtri', 'Mikro-Dofamin Qadami'];
+  var roseAccent = accent === 'rose';
+
+  var html = '<div class="ai-response">' +
+    '<div class="ai-response-header">' +
+      '<div class="ai-avatar">⚡</div>' +
+      '<div><div class="ai-meta-title">ENERGIYA AI Tahlili</div><div class="ai-meta-sub">Psixologik diagnostika natijasi</div></div>' +
+    '</div>' +
+    '<div class="ai-response-body">';
+
+  if(sections[0] || sections[1] || sections[2]){
+    sections.forEach(function(s, i){
+      if(!s.trim()) return;
+      html += '<div class="ai-block">' +
+        '<div class="ai-block-title ' + blocks[i].cls + '">' +
+          '<span>' + blocks[i].emoji + '</span>' +
+          '<span>' + blockTitles[i] + '</span>' +
+        '</div>' +
+        '<div class="ai-block-content">' + formatAiText(s.trim()) + '</div>' +
+      '</div>';
+      if(i < 2) html += '<div class="divider"></div>';
+    });
+  } else {
+    // fallback
+    html += '<div class="ai-block-content">' + formatAiText(text) + '</div>';
+  }
+
+  html += '</div></div>';
+  el.innerHTML = html;
+}
+
+function formatAiText(t){
+  return t
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/^[-•]\s+/gm,'&bull; ')
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/\n/g,'<br>')
+    .replace(/^/, '<p>')
+    .replace(/$/, '</p>');
+}
+
+// ===== TEST FLOW =====
+var testQuestions = [
+  {q:'Qaysi jarayonda vaqtni unutasiz?',sub:'Mehr va ichki ishtiyoq',opts:{A:'Nimadir yaratish, dizayn qilish, vizual go\'zallik yoki kod yozishda.',B:'Odamlar bilan muloqot, o\'qitish, psixologik yordam yoki matn yozishda.',C:'Tartibsizlikni yig\'ish, reja tuzish, ma\'lumotlarni guruhlash yoki jadvallar bilan ishlashda.',D:'Qo\'l mehnati, pishiriqlar, buyumlarni ta\'mirlash yoki amaliy san\'atda.'}},
+  {q:'Sizda nima eng oson uddalanadi?',sub:'Tabiiy super-kuch',opts:{A:'Kreativ g\'oyalar va har qanday narsaning vizual ko\'rinishini brend darajasiga olib chiqish.',B:'Insonlarni tinglash, og\'riqlarini his qilish va murakkabni oddiy tushuntirib berish.',C:'Raqamlar, moliya, vaqt va loyihalarni aniq nazorat qilish va tizimga solish.',D:'Detallarga e\'tibor, mahsulot sifatini ideal darajaga yetkazish va jismoniy natija yaratish.'}},
+  {q:'Bo\'sh 1.5–2 soatlik vaqt qachon paydo bo\'ladi?',sub:'Yashirin vaqt xaritasi',opts:{A:'Kechasi hamma uxlaganda — menga tinchlik va chuqur diqqat muhim.',B:'Kun davomida qisqa tanaffuslarda — telefon orqali tez aloqada bo\'la olaman.',C:'Ertalab tong saharda — miya eng toza va rejalashtirishga tayyor.',D:'Dam olish kunlari yoki maxsus blok vaqtda — to\'liq jarayonga kirib ketish uchun.'}},
+  {q:'Hozirgi imkoniyatlaringiz qaysi uslubda ishlashga ruxsat beradi?',sub:'Reallik va mavjud sharoit',opts:{A:'Noutbuk qarshisida o\'tirib, internet orqali masofadan loyihalar qilishga.',B:'Telefon orqali maslahat, blog, audio/video suhbatlar yoki matnlar yozishga.',C:'Biznes yoki loyihalarning orqa fonida boshqaruv va tahlil ishlarini olib borishga.',D:'Uydan turib jismoniy mahsulot (pishiriq, tikuvchilik, qo\'l mehnati) yaratishga.'}},
+  {q:'Sizni harakatga keltiruvchi eng qulay format nima?',sub:'Ilk strategik qadam',opts:{A:'Mustaqil texnik ko\'nikmalar (IT, dizayn, vibe coding) o\'rganib, darhol loyiha qilish.',B:'Odamlar orasiga chiqish, shaxsiy brend yaratish va bilimlarni ulashish orqali auditoriya.',C:'Mavjud tizimga tartib, yangi tahliliy reja yoki optimizatsiya olib kirish.',D:'Kichik buyurtmalar olib, mahsulotni o\'z qo\'lim bilan tayyorlash va natijasini ko\'rish.'}},
+  {q:'Instagram, Telegram yoki YouTube\'da ko\'proq nimalarga chalg\'iysiz?',sub:'Ijtimoiy tarmoqlar filtri',opts:{A:'Estetik videolar, saytlar tahlili, IT-texnologiyalar, AI dasturlari yoki trenddagi vizuallar.',B:'Psixologik suhbatlar, motivatsion podkastlar va shaxsiy rivojlanish bloglari.',C:'Biznes strategiyalari, tizim qurish, raqamlar, investitsiyalar va tashkiliy maslahatlar.',D:'"Do-it-yourself", pishiriq reseptlari, kiyim modasi, interyer yoki mahsulot tayyorlash.'}},
+  {q:'"Buning o\'rnida men bo\'lsam ekan" deb kimlarga havaslanasiz?',sub:'Yashirin havas',opts:{A:'Hech kimga bog\'lanmay, uydan turib dunyo miqyosidagi loyihalarni kodlayotgan freelancerlarga.',B:'Sahnada nutq so\'zlayotgan, kitob yozgan, odamlar hayotini o\'zgartirayotgan kouch va psixologlarga.',C:'Katta jamoani boshqarayotgan, hamma narsani reja asosida soatdek ishlatayotgan top-menejerlarga.',D:'O\'z ustaxonasi, brendi yoki mini-ishlab chiqarishiga ega ijodkor tadbirkorlarga.'}},
+  {q:'Qidiruv bo\'limida ko\'proq nimani qidirasiz?',sub:'Diqqat generatori',opts:{A:'Yangi AI, foydalanish mumkin dasturlar, grafik trendlar yoki saytlar dizayni.',B:'Inson xarakteri, munosabatlar sirlari, bolalar psixologiyasi yoki nutq san\'ati.',C:'Pul boshqarish, xarajatlar tahlili, tizimlashtirish (Notion, Excel).',D:'Yangi reseptlar, kiyim andozalari, hunarmandchilik yoki mahsulot sifatini yaxshilash.'}},
+  {q:'Atrofingizdagi insonlarning ishida qaysi jihat sizni g\'azablantiradi?',sub:'Ong osti e\'tirozi',opts:{A:'Did-farosatsizlik, xunuk dizaynlar, saytlarning qotib ishlashi va noqulay vizuallar.',B:'Odamlarning bir-birini eshitmasligi, qo\'pollik va mijozlarga sovuq munosabat.',C:'Tartibsizlik, va\'daga vafo qilmaslik, rejasizlik va chalkash hisob-kitoblar.',D:'Mahsulotning sifatsizligi, chala tikilgan kiyim yoki mazasiz tayyorlangan taom.'}},
+  {q:'O\'z ustingizda ishlashga majbur qilayotgan eng katta sabab nima?',sub:'Sharoitdan chiqish drayveri',opts:{A:'Miyaning cheklanib qolishi; zamonaviy global dunyoga (IT/AI) qo\'shilishni istayman.',B:'Shaxs sifatida yuzaga chiqmaslik; odamlarga foyda berishni va o\'z ovozimga ega bo\'lishni xohlayman.',C:'Moliyaviy qaramlik; o\'z pullarimni va hayotim tizimini o\'zim nazorat qilishni xohlayman.',D:'Erkin ijod qila olmaslik; o\'z qo\'lim bilan go\'zallik yaratib, mustaqil bo\'lishni istayman.'}}
+];
+
+var testScores = {A:0,B:0,C:0,D:0};
+var testCurrentQ = 0;
+
+function initTest(){
+  testScores = {A:0,B:0,C:0,D:0};
+  testCurrentQ = 0;
+  renderTestQ(0);
+  updateTestProgress();
+}
+
+function renderTestQ(idx){
+  var wrap = document.getElementById('test-steps-wrap');
+  var q = testQuestions[idx];
+  var html = '<div class="test-step active" style="padding:18px">' +
+    '<div class="test-q">' + q.q + '</div>' +
+    '<div class="test-q-sub">' + q.sub + '</div>' +
+    '<div class="choice-grid">';
+  ['A','B','C','D'].forEach(function(letter){
+    html += '<div class="choice-opt" data-letter="' + letter + '">' +
+      '<div class="choice-letter">' + letter + '</div>' +
+      '<div class="choice-text">' + q.opts[letter] + '</div>' +
+    '</div>';
+  });
+  html += '</div>';
+  if(idx < testQuestions.length-1){
+    html += '<button class="btn btn-ghost btn-sm" id="test-next-btn" disabled style="color:var(--text3)">Keyingisi &rarr;</button>';
+  } else {
+    html += '<button class="btn btn-primary" id="test-submit-btn" disabled>Natijani ko\'rish ⚡</button>';
+  }
+  html += '</div>';
+  wrap.innerHTML = html;
+
+  // Choices
+  wrap.querySelectorAll('.choice-opt').forEach(function(opt){
+    opt.onclick = function(){
+      wrap.querySelectorAll('.choice-opt').forEach(function(o){ o.classList.remove('selected'); });
+      opt.classList.add('selected');
+      var nextBtn = document.getElementById('test-next-btn') || document.getElementById('test-submit-btn');
+      if(nextBtn){ nextBtn.removeAttribute('disabled'); nextBtn.style.color = ''; }
+    };
+  });
+
+  var nb = document.getElementById('test-next-btn');
+  if(nb) nb.onclick = function(){
+    var sel = wrap.querySelector('.choice-opt.selected');
+    if(!sel) return;
+    testScores[sel.dataset.letter]++;
+    testCurrentQ++;
+    updateTestProgress();
+    renderTestQ(testCurrentQ);
+  };
+  var sb = document.getElementById('test-submit-btn');
+  if(sb) sb.onclick = function(){
+    var sel = wrap.querySelector('.choice-opt.selected');
+    if(!sel) return;
+    testScores[sel.dataset.letter]++;
+    showTestResult();
+  };
+}
+
+function updateTestProgress(){
+  var pct = ((testCurrentQ) / testQuestions.length) * 100;
+  document.getElementById('test-prog-fill').style.width = pct + '%';
+  document.getElementById('test-q-label').textContent = 'Savol ' + (testCurrentQ+1) + '/' + testQuestions.length;
+  document.getElementById('test-score-display').textContent = 'A:'+testScores.A+' B:'+testScores.B+' C:'+testScores.C+' D:'+testScores.D;
+}
+
+async function showTestResult(){
+  // Find winner
+  var max = 0;
+  var winner = 'A';
+  Object.keys(testScores).forEach(function(k){ if(testScores[k] > max){ max = testScores[k]; winner = k; } });
+  var types = {
+    A:{name:'Raqamli Arxitektor',desc:'IT, Vibe Coding, Grafik Dizayn',emoji:'💻',tagline:'Sizning kuchingiz — vizual did va mantiqiy intellekt. Global raqamli loyihalar, AI va masofadan ishlash — bu sizning haqiqiy maydoningiz.',badge:'i-indigo',color:'var(--indigo2)'},
+    B:{name:'Emotsional Metanutr',desc:'Psixologiya, Kouching, Kontent',emoji:'🎤',tagline:'Sizning kuchingiz — empatiya va so\'z san\'ati. Insonlar qalbiga yo\'l topish va bilim ulashish orqali shaxsiy brendingiz bunyod bo\'ladi.',badge:'i-rose',color:'#fb7185'},
+    C:{name:'Tizim Strategi',desc:'Menejment, Audit, Finans',emoji:'📊',tagline:'Siz tartib va struktura odamisiz. Chalkashlikni tizimga solish, moliyaviy hisob-kitoblar va strategik rejalashtirish — bu sizning tabiiy super-kuchingiz.',badge:'',color:'var(--emerald2)'},
+    D:{name:'Amaliy Brand Ijodkori',desc:'Hunarmandchilik, Mini-ishlab chiqarish',emoji:'🎨',tagline:'Siz natijani ko\'z bilan ko\'rib, qo\'l bilan ushlashni yoqtirasiz. O\'z ustaxonangiz va shaxsiy liniyangiz — siz uchun to\'g\'ri yo\'l.',badge:'i-amber',color:'var(--amber)'}
+  };
+  var t = types[winner];
+
+  document.getElementById('test-questions-view').style.display = 'none';
+  document.getElementById('test-result-view').style.display = 'block';
+  document.getElementById('result-badge-lg').textContent = t.emoji;
+  document.getElementById('result-badge-lg').style.background = 'rgba(99,102,241,.15)';
+  document.getElementById('result-type-name').textContent = t.name;
+  document.getElementById('result-tagline').textContent = t.desc;
+
+  state.testResult = {letter:winner, name:t.name};
+  state.testDone = true;
+  updateStats();
+
+  // Get AI analysis
+  showLoading();
+  var prompt = 'Siz — transformatsion kouch va "ENERGIYA" loyihasining bosh AI maslahatchisiz.\n[KIRUVCHI MA\'LUMOTLAR]\n- Test natijasi: ' + winner + '\n- Yo\'nalish nomi: "' + t.name + '"\n- Foydalanuvchi sharoiti: Platforma foydalanuvchisi\n\n[VAZIFA]: Maksimal 250-300 so\'zda 3 ta blokda javob bering:\n\n⚡️ 1. BAHONALARNI ALMASHTIRISH (The Mindset Shift)\nFoydalanuvchining hozirgi sharoitini uning to\'sig\'i emas, aynan "' + t.name + '" kasbini o\'rganishi uchun ulkan resurs ekanligini fosh qiling. Sharoitning ijobiy tomonini ko\'rsating.\n\n🔋 2. MIKRO-DOFAMIN QADAMLARI (The 15-Minute Action)\n"' + winner + '" harfiga mos, bugunning o\'zida uydan chiqmay 15 daqiqada bajara oladigan aniq 2 ta amaliy mikro-vazifa bering.\n\n🌱 3. SHAROIT ICHIDAGI SHON-SHARAF (The Declaration)\nFoydalanuvchini o\'z realligi bilan urushishni to\'xtatishga chorlang. Kuniga atigi 45 daqiqa o\'zi uchun vaqt ajratish orqali ichki energiyasi qanchalik tez tiklanishini kouching savoli orqali ongiga muhrlang.\n\n[TAQIQLAR]: Arzon motivatsion gaplar taqiqlangan. "Siz" deb murojaat qiling. Markdown formatida.';
+
+  try{
+    var resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    var data = await resp.json();
+    hideLoading();
+    var text = (data.content||[]).map(function(c){ return c.text||''; }).join('\n');
+    var resDiv = document.getElementById('test-result-content');
+    resDiv.innerHTML = '';
+    renderAiResponse(text, 'test-result-content');
+    state.insights++;
+    updateStats();
+  }catch(e){
+    hideLoading();
+    document.getElementById('test-result-content').innerHTML = '<div class="card-sm"><p style="color:var(--text2);font-size:13px;line-height:1.7">' + t.tagline + '</p></div>';
+  }
+  document.getElementById('shell').querySelector('.scroll-area').scrollTop = 0;
+}
+
+document.getElementById('start-test-btn').onclick = function(){
+  document.getElementById('test-intro-view').style.display = 'none';
+  document.getElementById('test-questions-view').style.display = 'block';
+  initTest();
+};
+
+document.getElementById('retake-test-btn').onclick = function(){
+  testScores = {A:0,B:0,C:0,D:0};
+  testCurrentQ = 0;
+  document.getElementById('test-result-view').style.display = 'none';
+  document.getElementById('test-result-content').innerHTML = '';
+  document.getElementById('test-questions-view').style.display = 'block';
+  initTest();
+};
+
+// If test was already done, show result
+if(state.testDone && state.testResult){
+  document.getElementById('test-intro-view').style.display = 'none';
+  // Show a mini result summary
+  var restoreBtn = document.createElement('div');
+  restoreBtn.style.cssText = 'padding:18px';
+  restoreBtn.innerHTML = '<div class="card" style="text-align:center;margin-bottom:12px"><div style="font-size:36px;margin-bottom:10px">✅</div><div class="result-type" style="font-size:18px;margin-bottom:6px">' + state.testResult.name + '</div><div style="font-size:12px;color:var(--text3)">Test yakunlangan</div></div><button class="btn btn-ghost" id="retake-btn2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Qayta topshirish</button>';
+  document.getElementById('s-test').querySelector('.scroll-area') || document.getElementById('s-test').appendChild(restoreBtn);
+  document.getElementById('test-intro-view').parentNode.insertBefore(restoreBtn, document.getElementById('test-intro-view'));
+  document.getElementById('retake-btn2').onclick = function(){
+    restoreBtn.remove();
+    document.getElementById('test-intro-view').style.display = 'block';
+  };
+}
+
+// ===== INIT DAYS LISTS =====
+renderDaysList(ichkiDays, state.ichkiCompleted, 'ichki-days-list', openIchkiDay);
+renderDaysList(soulDays, state.soulCompleted, 'soul-days-list', openSoulDay);
+
+// ===== RESET =====
+document.getElementById('reset-btn').onclick = function(){
+  if(confirm('Barcha progressni o\'chirasizmi?')){
+    state = {ichkiCompleted:{},soulCompleted:{},ichkiAnswers:{},soulAnswers:{},testDone:false,testResult:null,streak:0,sessions:0,insights:0};
+    saveState();
+    updateStats();
+    renderDaysList(ichkiDays, state.ichkiCompleted, 'ichki-days-list', openIchkiDay);
+    renderDaysList(soulDays, state.soulCompleted, 'soul-days-list', openSoulDay);
+    showToast('Ma\'lumotlar tozalandi');
+  }
+};
+
+})();
+</script>
+</body>
+</html>
